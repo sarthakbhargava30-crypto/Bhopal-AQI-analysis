@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bhopal AQI Analysis (PM2.5 & PM10)</title>
+
+  <style>
+    :root{
+      --bg1:#0b1020;
+      --bg2:#151a2f;
+      --card: rgba(255,255,255,0.06);
+      --border: rgba(255,255,255,0.12);
+      --text:#e9ecff;
+      --muted:#b8c0ff;
+      --accent:#7aa2ff;
+      --accent2:#8b5cf6;
+      --shadow: 0 18px 55px rgba(0,0,0,0.35);
+      --radius: 18px;
+    }
+
+    *{ box-sizing:border-box; margin:0; padding:0; }
+    body{
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 20% 0%, rgba(122,162,255,0.25), transparent 60%),
+                  radial-gradient(1000px 700px at 90% 10%, rgba(139,92,246,0.22), transparent 55%),
+                  linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height: 100vh;
+      padding: 36px 18px 60px;
+    }
+
+    .container{
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .hero{
+      background: linear-gradient(135deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 34px 26px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    h1{
+      font-size: 2.1rem;
+      letter-spacing: 0.2px;
+      text-align:center;
+      margin-bottom: 10px;
+    }
+
+    .subtitle{
+      text-align:center;
+      color: var(--muted);
+      line-height: 1.55;
+      max-width: 860px;
+      margin: 0 auto 20px;
+      font-size: 1.02rem;
+    }
+
+    .buttons{
+      display:flex;
+      gap: 12px;
+      justify-content:center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .btn{
+      text-decoration:none;
+      color: var(--text);
+      padding: 12px 16px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.06);
+      transition: 0.2s ease;
+      font-weight: 600;
+      display:inline-flex;
+      gap: 10px;
+      align-items:center;
+    }
+
+    .btn:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,0.10);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(122,162,255,0.30), rgba(139,92,246,0.25));
+      border-color: rgba(122,162,255,0.35);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    .card{
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 16px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+    }
+
+    .card h2{
+      font-size: 1.05rem;
+      margin-bottom: 8px;
+      letter-spacing: 0.2px;
+    }
+
+    .card p, .card li{
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 0.97rem;
+    }
+
+    ul{
+      padding-left: 18px;
+      margin-top: 8px;
+    }
+
+    .span-6{ grid-column: span 6; }
+    .span-4{ grid-column: span 4; }
+    .span-12{ grid-column: span 12; }
+
+    .imgwrap{
+      margin-top: 12px;
+      border-radius: 16px;
+      overflow:hidden;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(0,0,0,0.25);
+    }
+
+    .imgwrap img{
+      width: 100%;
+      display:block;
+    }
+
+    .imgcap{
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .footer{
+      text-align:center;
+      margin-top: 22px;
+      color: rgba(233,236,255,0.65);
+      font-size: 0.92rem;
+    }
+
+    .pill{
+      display:inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.14);
+      background: rgba(255,255,255,0.05);
+      color: rgba(233,236,255,0.78);
+      font-size: 0.85rem;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 900px){
+      .span-6{ grid-column: span 12; }
+      .span-4{ grid-column: span 12; }
+      h1{ font-size: 1.8rem; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <div class="hero">
+      <h1>Bhopal Air Quality Analysis (PM2.5 & PM10)</h1>
+      <p class="subtitle">
+        A real-world data analytics + forecasting project built using the AQI India dataset (2023–2025).
+        Includes station-wise analysis, interactive mapping, and a Random Forest model to forecast upcoming AQI values.
+      </p>
+
+      <div class="buttons">
+        <a class="btn primary" href="maps/bhopal_air_quality_map.html" target="_blank">
+          🗺️ Open Interactive Map
+        </a>
+
+        <a class="btn" href="Bhopal_AQI_Forecast.ipynb" target="_blank">
+          📒 View Notebook
+        </a>
+
+        <a class="btn" href="https://github.com/sarthakbhargava30-crypto/bhopal-air-quality-analysis" target="_blank">
+          ⭐ GitHub Repository
+        </a>
+
+        <a class="btn" href="outputs/forecast_next7.csv" download>
+          ⬇️ Download Forecast CSV
+        </a>
+      </div>
+
+      <div style="text-align:center;">
+        <span class="pill">Deployed using GitHub Pages • Python • Pandas • Matplotlib • Folium • Scikit-learn</span>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <div class="card span-6">
+        <h2>📌 Project Objectives</h2>
+        <ul>
+          <li>Extract and analyze AQI readings for Bhopal from a large India dataset.</li>
+          <li>Visualize station-level particulate pollution patterns.</li>
+          <li>Create an interactive GIS dashboard using Folium.</li>
+          <li>Build a baseline AQI forecasting model using Random Forest.</li>
+        </ul>
+      </div>
+
+      <div class="card span-6">
+        <h2>🧠 Skills Demonstrated</h2>
+        <ul>
+          <li>Data cleaning + feature engineering</li>
+          <li>Exploratory Data Analysis (EDA)</li>
+          <li>Interactive visualization (Folium)</li>
+          <li>Model training + evaluation (MAE, RMSE, R²)</li>
+          <li>Deployment using GitHub Pages</li>
+        </ul>
+      </div>
+
+      <div class="card span-4">
+        <h2>📊 Model: Actual vs Predicted</h2>
+        <div class="imgwrap">
+          <img src="outputs/actual_vs_pred.png" alt="Actual vs Predicted AQI">
+          <div class="imgcap">Random Forest predictions compared against true AQI values.</div>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <h2>🌲 Feature Importance</h2>
+        <div class="imgwrap">
+          <img src="outputs/feature_importance.png" alt="Feature Importance">
+          <div class="imgcap">Which features influence AQI prediction the most.</div>
+        </div>
+      </div>
+
+      <div class="card span-4">
+        <h2>📈 Next 7 Days Forecast</h2>
+        <div class="imgwrap">
+          <img src="outputs/forecast_next7.png" alt="Next 7 Days AQI Forecast">
+          <div class="imgcap">Forecasted AQI trend for the next 7 days.</div>
+        </div>
+      </div>
+
+      <div class="card span-12">
+        <h2>💡 Why This Project Matters</h2>
+        <p>
+          This project demonstrates an end-to-end data analytics workflow:
+          raw dataset → cleaning → analysis → visualization → forecasting → deployment.
+          Even though the author is an Electronics & Communication Engineering student,
+          this proves strong applied analytics and practical machine learning skills.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="footer">
+      Built by Sarthak Bhargava • 2026 • Bhopal AQI Analysis Project
+    </div>
+
+  </div>
+</body>
+</html>
